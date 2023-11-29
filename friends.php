@@ -1,30 +1,20 @@
 <?php
 include "connect.php";
-/*$username= $_GET['email'];
-$query1="select * from muni_users where EMAIL <> '$username'";
-$sql1=$conn->query($query1);
-$query2="select * from requests where request_reciver='$username'";
-$sql2=$conn->query($query2);
-$query3="select * from requests where request_reciver='$username' and accept=1";
-$sql3=$conn->query($query3);*/
 
 $username = isset($_GET['email']) ? $_GET['email'] : '';
 
-// Query to get all users except the specified one
 $query1 = "SELECT * FROM muni_users WHERE EMAIL <> ?";
 $stmt1 = $conn->prepare($query1);
 $stmt1->bind_param("s", $username);
 $stmt1->execute();
 $sql1 = $stmt1->get_result();
 
-// Query to get all incoming friend requests for the specified user
 $query2 = "SELECT * FROM requests WHERE request_reciver = ?";
 $stmt2 = $conn->prepare($query2);
 $stmt2->bind_param("s", $username);
 $stmt2->execute();
 $sql2 = $stmt2->get_result();
 
-// Query to get accepted friend requests for the specified user
 $query3 = "SELECT * FROM requests WHERE request_reciver = ? AND accept = 1";
 $stmt3 = $conn->prepare($query3);
 $stmt3->bind_param("s", $username);
